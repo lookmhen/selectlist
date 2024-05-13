@@ -1,38 +1,41 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const SelectReason = document.querySelector("#Select_1715573032068_awdSelectDiv select");
-    const SelectReason2 = document.querySelector("#Select_1715573032071_awdSelectDiv select");
+const SelectReason = document.querySelector("#Select_1715573032068 .awdSelectDiv select");
+const SelectReason2 = document.querySelector("#Select_1715573032071 .awdSelectDiv select");
 
-    // Assuming REASONS is an array of objects with 'value' and 'text' properties
-    const REASONS = [
-        { value: '1', text: 'Reason One' },
-        { value: '2', text: 'Reason Two' },
-        { value: '3', text: 'Reason Three' }
-    ];
+const REASONS = [
+    { value: ["value1", "value2", "value3"], text: 'Reason One' },
+    { value: ["value11", "value22", "value33"], text: 'Reason Two' },
+    { value: ["value111", "value222", "value333"], text: 'Reason Three' }
+];
 
-    REASONS.forEach(optionList => {
-        const optionForReason1 = document.createElement('option');
-        optionForReason1.value = optionList.value;
-        optionForReason1.text = optionList.text;
-        SelectReason.appendChild(optionForReason1);
 
-        const optionForReason2 = document.createElement('option');
-        optionForReason2.value = optionList.value;
-        optionForReason2.text = optionList.text;
-        SelectReason2.appendChild(optionForReason2);
+// Populate the first dropdown
+REASONS.forEach(optionList => {
+    const option = document.createElement('option');
+    option.value = optionList.value.join(',');  // Join values for internal use
+    option.text = optionList.text;
+    SelectReason.appendChild(option);
+});
+
+
+
+// Add change event listener to update the second dropdown based on selection
+SelectReason.addEventListener('change', () => {
+    // Clear existing options in SelectReason2
+    SelectReason2.innerHTML = '';
+
+    // Get the selected option and split it back to array
+    const selectedValue = SelectReason.options[SelectReason.selectedIndex].value;
+    const values = selectedValue.split(',');
+
+    // Populate SelectReason2 with new options
+    values.forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.text = value;
+        SelectReason2.appendChild(option);
     });
 
-    SelectReason.addEventListener('change', () => {
-        const selectedOption = SelectReason.options[SelectReason.selectedIndex];
-        // Update SelectReason2 to have the same selected value as SelectReason
-        SelectReason2.value = selectedOption.value;
-
-        // Log change to console (optional, can be removed if not needed)
-        console.log("Change detected:");
-        console.log("Selected value:", selectedOption.value);
-        console.log("Selected text:", selectedOption.text);
-
-        // Additional functionality can be added here
-        // For example:
-        // chooseReason(); // If you have a function to handle the selection
-    });
+    // Optional: log changes to console
+    console.log("Change detected:");
+    console.log("Selected values:", values);
 });
