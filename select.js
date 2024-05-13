@@ -39,3 +39,8 @@ SelectReason.addEventListener('change', () => {
     console.log("Change detected:");
     console.log("Selected values:", values);
 });
+
+// Trigger change event on load to populate SelectReason2
+window.onload = () => {
+    SelectReason.dispatchEvent(new Event('change'));
+};
